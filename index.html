@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mana Prema Prayanam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --gold: #d4af37; 
+            --love-gradient: linear-gradient(135deg, #1a0a2e 0%, #4a0e2e 50%, #1a0a2e 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { height: 100%; background: #000; color: white; font-family: 'Montserrat', sans-serif; overflow: hidden; }
+
+        /* Welcome Screen */
+        #welcome-screen {
+            height: 100vh; width: 100%; position: fixed; top: 0; left: 0; z-index: 100;
+            background: var(--love-gradient);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: transform 1.5s cubic-bezier(0.8, 0, 0.2, 1);
+            overflow: hidden; text-align: center;
+        }
+
+        .stars {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.3; animation: starsMove 100s linear infinite;
+        }
+        @keyframes starsMove { from { background-position: 0 0; } to { background-position: 10000px 5000px; } }
+
+        .hero-container { position: relative; z-index: 5; width: 90%; }
+        .hero-container h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(3.2rem, 10vw, 6.5rem);
+            color: var(--gold);
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .flirt-line { font-size: clamp(0.9rem, 3.5vw, 1.2rem); line-height: 1.8; color: #eee; margin: 0 auto 30px; max-width: 700px; padding: 0 20px; font-style: italic; }
+        .instruction { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 4px; color: var(--gold); margin-bottom: 15px; }
+
+        input { 
+            background: transparent; border: none; border-bottom: 1px solid rgba(212, 175, 55, 0.5);
+            color: white; font-size: 1.8rem; text-align: center; padding: 10px; width: 100%; max-width: 300px; outline: none; 
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .start-btn { 
+            margin-top: 40px; padding: 15px 50px; border: 1px solid var(--gold); color: var(--gold); 
+            background: transparent; cursor: pointer; text-transform: uppercase; letter-spacing: 5px;
+            transition: 0.5s; animation: heartbeat 2s infinite;
+        }
+        .start-btn:hover { background: var(--gold); color: black; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        /* Journey UI */
+        #journey-ui { display: none; height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
+        .parallax { height: 100vh; width: 100%; scroll-snap-align: start; background-attachment: fixed; background-position: center; background-size: cover; display: flex; justify-content: center; align-items: center; position: relative; }
+        
+        .content { z-index: 2; text-align: center; padding: 30px; max-width: 85%; }
+        .day-tag { letter-spacing: 10px; font-size: 0.8rem; margin-bottom: 20px; color: var(--gold); font-weight: bold; display: block; text-transform: uppercase; }
+        .telugu { font-size: clamp(1.4rem, 4.5vw, 2.4rem); font-weight: 600; margin-bottom: 15px; text-shadow: 2px 2px 12px rgba(0,0,0,0.9); line-height: 1.4; }
+        .english { font-style: italic; font-size: 0.9rem; opacity: 0.8; color: #ddd; text-shadow: 1px 1px 5px #000; }
+
+        #music-toggle {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+            background: rgba(0,0,0,0.6); border: 1px solid var(--gold);
+            color: var(--gold); padding: 10px; border-radius: 50%;
+            cursor: pointer; font-size: 20px; width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Parallax Backgrounds */
+        .img-1 { background-image: url('rose.png'); }
+        .img-2 { background-image: url('propose.png'); }
+        .img-3 { background-image: url('chocolate.png'); }
+        .img-4 { background-image: url('teddy.png'); }
+        .img-5 { background-image: url('promise.png'); }
+        .img-6 { background-image: url('hug.png'); }
+        .img-7 { background-image: url('kiss.png'); }
+        .img-8 { background-image: url('valentine.png'); }
+
+        .floating-heart { position: absolute; color: var(--gold); pointer-events: none; animation: floatUp 4s linear forwards; opacity: 0.4; z-index: 10; }
+        @keyframes floatUp { from { transform: translateY(100vh); } to { transform: translateY(-10vh); opacity: 0; } }
+        
+        #player-wrap { position: fixed; top: -500px; left: 0; width: 1px; height: 1px; opacity: 0.01; }
+    </style>
+</head>
+<body>
+
+    <div id="player-wrap"><div id="player"></div></div>
+    <div id="music-toggle" onclick="toggleMusic()">♪</div>
+
+    <div id="welcome-screen">
+        <div class="stars"></div>
+        <div class="hero-container">
+            <h1>Mana Prema Prayanam</h1>
+            <p class="flirt-line">"Kshanam oka yugamla anipisthundi nuvvu pakkana lekunte... <br> aa yuganni kshanamla marchesi naa lokam nuvve kavali."</p>
+            <p class="instruction">Naa Banagaram</p>
+            <input type="text" id="userName" value="Karuna Reddy" readonly autocomplete="off">
+            <br>
+            <button class="start-btn" id="startBtn" onclick="startJourney()">Begin</button>
+        </div>
+    </div>
+
+    <div id="journey-ui">
+        <section class="parallax img-1"><div class="content"><span class="day-tag">Day 1 • Rose Day</span>
+        <div class="telugu"><span class="p-name"></span>, ee rose lo unna parimalam kante, mana parichayam icchina gnapakaale ekkuva rojulu gurtuntay.</div></div></section>
+
+        <section class="parallax img-2"><div class="content"><span class="day-tag">Day 2 • Propose Day</span>
+        <div class="telugu"><span class="p-name"></span>, naa prathi oopiri nee gnapakam thone modhalavali... ee deham katta kale varaku nee cheyi viduvani oka thodu la, naa lokam nuvve avthava?</div></div></section>
+
+        <section class="parallax img-3"><div class="content"><span class="day-tag">Day 3 • Chocolate Day</span>
+        <div class="telugu">Chocolate kante sweet ga mana kaburlu unte, inka ee teepi enduku? Mana prema eppatiki ilaage thiyyaga undali.</div></div></section>
+
+        <section class="parallax img-4"><div class="content"><span class="day-tag">Day 4 • Teddy Day</span>
+        <div class="telugu">Nenu lenappudu ee teddy-ey nee thodu. Nee prema aina, kopam aina denithone panchuko... nee prema kevalam naaku, ee teddy-ki mathrame chandhaali!</div></div></section>
+
+        <section class="parallax img-5"><div class="content"><span class="day-tag">Day 5 • Promise Day</span>
+        <div class="telugu">Govindudi saksiga chepthunna... kaalam tho paatu karigipoye maata kaadu idi, naa gundetho paatu aagipoye varaku unde nijam.</div></div></section>
+
+        <section class="parallax img-6"><div class="content"><span class="day-tag">Day 6 • Hug Day</span>
+        <div class="telugu">Ninnu daggara teesukunnappudu aagipoye aa kshanam... prapancham lo unna anni badhalani marchipoye magic undi.</div></div></section>
+
+        <section class="parallax img-7"><div class="content"><span class="day-tag">Day 7 • Kiss Day</span>
+        <div class="telugu">Mana mounam, ee challani gaali... ee kshanam mana prema kathalo eppatiki oka madhura gnapakamai migilipovaali.</div></div></section>
+
+        <section class="parallax img-8"><div class="content"><span class="day-tag">Day 8 • Valentine's Day</span>
+        <div class="telugu">Arundhati Nakshatram laaga, mana bandham nithya sathyam. Janma janmala ee prayanam neethone, neekosame!</div></div></section>
+
+        <section class="parallax" style="background: var(--love-gradient); background-attachment: scroll;">
+            <div class="content" id="final-card">
+                <span class="day-tag">The Final Question</span>
+                <div class="telugu">"Prema aney ee prapancham lo, nadhi anukonedhi anukoney oka pilla nuvvu avutava?"</div>
+                <div style="display: flex; justify-content: center; align-items: center; margin-top: 30px; position: relative; min-height: 100px;">
+                    <button class="start-btn" id="yesBtn" onclick="sayYes()" style="margin-right: 20px;">Yes</button>
+                    <button class="start-btn" id="noBtn" onmouseover="moveNo()">No</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let player;
+        let isReady = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '1',
+                width: '1',
+                videoId: 'zNFlJqvxwdg', 
+                playerVars: {
+                    'autoplay': 1,
+                    'mute': 1,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'zNFlJqvxwdg',
+                    'playsinline': 1,
+                    'enablejsapi': 1
+                },
+                events: {
+                    'onReady': (event) => { isReady = true; event.target.playVideo(); }
+                }
+            });
+        }
+
+        function startJourney() {
+            const name = document.getElementById('userName').value;
+            if (!name) return alert("Please enter a name!");
+            document.querySelectorAll('.p-name').forEach(el => el.innerText = name);
+            document.getElementById('journey-ui').style.display = 'block';
+            document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
+            
+            if (isReady && player) {
+                player.unMute();
+                player.setVolume(100);
+                player.playVideo();
+                document.getElementById('music-toggle').innerHTML = '||';
+            }
+        }
+
+        function toggleMusic() {
+            if (isReady && player) {
+                const state = player.getPlayerState();
+                if (state === YT.PlayerState.PLAYING) {
+                    player.pauseVideo();
+                    document.getElementById('music-toggle').innerHTML = '♪';
+                } else {
+                    player.unMute();
+                    player.playVideo();
+                    document.getElementById('music-toggle').innerHTML = '||';
+                }
+            }
+        }
+
+        function moveNo() {
+            const noBtn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        function sayYes() {
+            const finalCard = document.getElementById('final-card');
+            finalCard.innerHTML = `
+                <div style="color: var(--gold); font-family: 'Great Vibes', cursive; font-size: 3.5rem;">Thank you, My Love! ❤️</div>
+                <div class="telugu" style="font-size: 1.8rem; margin-top: 20px;">
+                    "Nee chirunavvu thodu unte, prathi roju oka Valentine's Day ne!"
+                </div>
+                <p class="english" style="margin-top: 10px;">(With your smile by my side, every single day is Valentine's Day!)</p>
+                <div style="margin-top: 30px; font-size: 2rem;">Forever Yours Love Madhan(Nee Karri Bangaram)</div>
+            `;
+            for(let i=0; i<60; i++) setTimeout(createHeart, i * 80);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+        setInterval(createHeart, 500);
+    </script>
+</body>
+</html>
